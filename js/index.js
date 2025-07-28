@@ -4,7 +4,7 @@ const foodSound = new Audio('snake-hiss-95241.mp3');
 const gameOverSound = new Audio('');
 const moveSound = new Audio('snake-hiss-95241.mp3');
 const musicSound = new Audio(''); 
-let speed = 2;
+let speed = 5;
 let score = 0;
 let lastPaintTime = 0;
 let snakeArr = [
@@ -39,6 +39,7 @@ function gameEngine(){
     }
     // If you have eaten the food so increment the score and regenerate the food in another place 
     if(snakeArr[0].y === food.y && snakeArr[0].x === food.x){
+        foodSound.play();
         snakeArr.unshift({x: snakeArr[0].x + inputDir.x , y: snakeArr[0].y + inputDir.y});
         let a = 2;
         let b = 16;
@@ -46,6 +47,12 @@ function gameEngine(){
     }
 
     // Moving the snake;
+    for(let i = snakeArr.length -2 ; i>=0 ; i--){
+        snakeArr[i+1] = {...snakeArr[i]};
+    }
+    snakeArr[0].x += inputDir.x;
+    snakeArr[0].y += inputDir.y;
+    
 
 
     //part2 : display the snake;
@@ -88,7 +95,7 @@ function gameEngine(){
 //MAIN LOGIC STARTS HERE
 window.requestAnimationFrame(main);
 window.addEventListener('keydown' , e =>{
-  inputDir = {x: 0 , y: 1}//Start the Game;
+  InputDir = {x: 0 , y: 1}//Start the Game;
   moveSound.play();
   switch(e.key){
     case "ArrowUp":
