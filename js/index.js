@@ -1,10 +1,11 @@
 //CONSTANTS AND VARIABLES
-let direction = {x: 0 , y: 0};
+let inputDir = {x: 0 , y: 0};
 const foodSound = new Audio('snake-hiss-95241.mp3');
 const gameOverSound = new Audio('');
 const moveSound = new Audio('snake-hiss-95241.mp3');
 const musicSound = new Audio(''); 
 let speed = 2;
+let score = 0;
 let lastPaintTime = 0;
 let snakeArr = [
     {x: 13 , y: 15}
@@ -22,8 +23,29 @@ function main(ctime){
     gameEngine();
 
 }
+function isCollide(sarr){
+    return false;
+}
 function gameEngine(){
     //part1 : updating the snake array and food;
+    if(isCollide(snakeArr)){
+        gameOverSound.play();
+        musicSound.pause();
+        inputDir = {x: 0 , y: 0};
+        alert("Game Over , Press any key to play again !");
+        snakeArr=[{x: 13 , y: 15}];
+        musicSound.play();
+        score = 0;
+    }
+    // If you have eaten the food so increment the score and regenerate the food in another place 
+    if(snakeArr[0].y === food.y && snakeArr[0].x === food.x){
+        snakeArr.unshift({x: snakeArr[0].x + inputDir.x , y: snakeArr[0].y + inputDir.y});
+        let a = 2;
+        let b = 16;
+        food = {x: Math.round(a + (b-a)*Math.random()) , y: Math.round(a + (b-a)*Math.random())};
+    }
+
+    // Moving the snake;
 
 
     //part2 : display the snake;
@@ -66,7 +88,7 @@ function gameEngine(){
 //MAIN LOGIC STARTS HERE
 window.requestAnimationFrame(main);
 window.addEventListener('keydown' , e =>{
-  InputDir = {x: 0 , y: 1}//Start the Game;
+  inputDir = {x: 0 , y: 1}//Start the Game;
   moveSound.play();
   switch(e.key){
     case "ArrowUp":
